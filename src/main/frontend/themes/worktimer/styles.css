@@ -1,1 +1,25 @@
 @import url('./main-layout.css');
+
+vaadin-progress-bar {
+
+   /* height: 100px;
+    ;*/
+    rotate: 270deg;
+    min-height: 10vh;
+    width: 20%;
+    margin-top: 30%;
+
+
+
+
+}
+vaadin-button {
+
+    width: 1%;
+}
+
+vaadin-form-layout {
+padding-right: 20%;
+padding-left: 20%;
+padding-top: 3%;
+}
