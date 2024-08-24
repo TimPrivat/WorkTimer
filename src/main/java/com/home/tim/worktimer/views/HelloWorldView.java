@@ -1,4 +1,4 @@
-package com.home.tim.worktimer.views.helloworld;
+package com.home.tim.worktimer.views;
 
 import com.home.tim.worktimer.views.MainLayout;
 import com.vaadin.flow.component.AttachEvent;
@@ -19,11 +19,11 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 
 @PageTitle("Hello World")
-@Route(value = "", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
+@Route(value = "Hello-World", layout = MainLayout.class)
 public class HelloWorldView extends FormLayout {
 
     private Button startWork;
@@ -53,8 +53,13 @@ public class HelloWorldView extends FormLayout {
         add(createProgressBar());
 
 
-        updatTimeWorked();
 
+        startWork.addClickListener(event ->{
+            LocalDateTime now = LocalDateTime.now();
+
+            UI.getCurrent().access(() -> par_startWork.setText("Startzeit: "+now)) ;
+
+        });
     }
 
     private ProgressBar createProgressBar() {
@@ -66,28 +71,7 @@ public class HelloWorldView extends FormLayout {
 
     }
 
-    private void updatTimeWorked() {
-
-        UI ui =UI.getCurrent();
-        new Thread(new Runnable() {
-            int counter = 0;
-
-            @Override
-            public void run() {
-                //UI ui = par_time_worked.getUI().get();
-                while(true){
-
-                    ui.access(() -> par_time_worked.setText("Gearbeitet: 01:12:00 " +counter++));
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                }
-
-        }).start();
 
     }
 
-}
+

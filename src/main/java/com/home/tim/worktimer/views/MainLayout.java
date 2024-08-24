@@ -1,7 +1,5 @@
 package com.home.tim.worktimer.views;
 
-import com.home.tim.worktimer.views.about.AboutView;
-import com.home.tim.worktimer.views.helloworld.HelloWorldView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.Footer;

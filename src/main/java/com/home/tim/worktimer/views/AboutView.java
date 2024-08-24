@@ -1,4 +1,4 @@
-package com.home.tim.worktimer.views.about;
+package com.home.tim.worktimer.views;
 
 import com.home.tim.worktimer.views.MainLayout;
 import com.vaadin.flow.component.html.H2;

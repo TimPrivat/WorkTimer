@@ -13,13 +13,25 @@ vaadin-progress-bar {
 
 
 }
-vaadin-button {
 
-    width: 1%;
-}
 
 vaadin-form-layout {
 padding-right: 20%;
 padding-left: 20%;
 padding-top: 3%;
+}
+
+vaadin-login-form{
+
+
+}
+
+.register-form{
+
+
+}
+
+.register-button {
+
+    width: 20%;
 }
