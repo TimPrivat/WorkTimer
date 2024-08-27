@@ -24,6 +24,9 @@ public class MainLayout extends AppLayout {
         setPrimarySection(Section.DRAWER);
         addDrawerContent();
         addHeaderContent();
+        addAttachListener(event -> System.out.println("Attached"));
+
+
     }
 
     private void addHeaderContent() {
@@ -70,5 +73,9 @@ public class MainLayout extends AppLayout {
     private String getCurrentPageTitle() {
         PageTitle title = getContent().getClass().getAnnotation(PageTitle.class);
         return title == null ? "" : title.value();
+
     }
+
+
+
 }
