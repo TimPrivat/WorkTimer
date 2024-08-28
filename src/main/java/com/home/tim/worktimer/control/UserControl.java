@@ -1,5 +1,6 @@
 package com.home.tim.worktimer.control;
 
+import com.home.tim.worktimer.dtos.UserDTO;
 import com.home.tim.worktimer.entities.User;
 import com.home.tim.worktimer.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,24 +25,33 @@ public class UserControl {
     }
 
 
-
     public boolean userExists(String userName) {
-        User user = userRepository.getUserByUsername(userName);
+        UserDTO user = userRepository.getUserByUsername(userName);
         return user != null;
 
     }
 
 
-    public User getUserByPassword(String password) {
-        User user = userRepository.getUserByPassword(password);
+    public UserDTO getUserByPassword(String password) {
+        UserDTO user = userRepository.getUserByPassword(password);
         if (user == null) {
-            throw new UsernameNotFoundException("User couldn't be found.");
+            System.err.println("User couldn't be found.");
+            ;
         }
 
         return user;
 
     }
 
+    public UserDTO getUserByUsernameAndPassword(String username, String password) {
+        UserDTO user = userRepository.getUserByUsernameAndPassword(username, password);
+        if (user == null) {
+            System.err.println("User couldn't be found.");
+        }
+
+        return user;
+
+    }
 
 
 }

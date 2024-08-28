@@ -1,5 +1,6 @@
 package com.home.tim.worktimer.repositories;
 
+import com.home.tim.worktimer.dtos.UserDTO;
 import com.home.tim.worktimer.entities.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,9 +19,12 @@ public interface UserRepository extends JpaRepository <User, Integer> {
     void deleteUserByUsername(String userName);
 
     @Query("SELECT u FROM User u WHERE u.username = ?1")
-    User getUserByUsername(String userName);
+    UserDTO getUserByUsername(String userName);
 
     @Query("SELECT u FROM User u WHERE u.password = ?1")
-    User getUserByPassword(String password);
+    UserDTO getUserByPassword(String password);
+
+    @Query("SELECT u FROM User u WHERE u.username = ?1 AND u.password = ?2")
+    UserDTO getUserByUsernameAndPassword(String userName, String password);
 
 }

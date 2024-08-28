@@ -1,6 +1,7 @@
 package com.home.tim.worktimer.views;
 
 import com.home.tim.worktimer.control.UserControl;
+import com.home.tim.worktimer.dtos.UserDTO;
 import com.home.tim.worktimer.entities.User;
 
 import com.home.tim.worktimer.repositories.UserRepository;
@@ -78,18 +79,9 @@ public class HelloWorldView extends FormLayout {
 
     }
 
-    private ProgressBar createProgressBar() {
-
-        ProgressBar progressBar = new ProgressBar();
-        progressBar.setValue(0.3);
-        return progressBar;
-
-
-    }
-
     @Override
     protected void onAttach(AttachEvent attachEvent) {
-        User currentUser = (User) UI.getCurrent().getSession().getAttribute("CurrentUser");
+        UserDTO currentUser = (UserDTO) UI.getCurrent().getSession().getAttribute("CurrentUser");
 
         if (currentUser == null) {
             attachEvent.getUI().getCurrent().navigate("login");
@@ -100,6 +92,17 @@ public class HelloWorldView extends FormLayout {
         }
 
     }
+
+    private ProgressBar createProgressBar() {
+
+        ProgressBar progressBar = new ProgressBar();
+        progressBar.setValue(0.3);
+        return progressBar;
+
+
+    }
+
+
 
 
 }

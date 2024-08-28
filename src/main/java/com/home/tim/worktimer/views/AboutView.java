@@ -1,6 +1,10 @@
 package com.home.tim.worktimer.views;
 
+import com.home.tim.worktimer.dtos.UserDTO;
+import com.home.tim.worktimer.entities.User;
 import com.home.tim.worktimer.views.MainLayout;
+import com.vaadin.flow.component.AttachEvent;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
@@ -30,6 +34,20 @@ public class AboutView extends VerticalLayout {
         setJustifyContentMode(JustifyContentMode.CENTER);
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         getStyle().set("text-align", "center");
+    }
+
+    @Override
+    protected void onAttach(AttachEvent attachEvent) {
+        UserDTO currentUser = (UserDTO) UI.getCurrent().getSession().getAttribute("CurrentUser");
+
+        if (currentUser == null) {
+            attachEvent.getUI().getCurrent().navigate("login");
+
+        } else {
+            System.out.println("Authenticated!");
+
+        }
+
     }
 
 }

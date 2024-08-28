@@ -3,6 +3,7 @@ package com.home.tim.worktimer.dtos;
 public interface UserDTO {
 
     int getUserID();
+
     void setUSerID(int userID);
 
     String getUserName();
