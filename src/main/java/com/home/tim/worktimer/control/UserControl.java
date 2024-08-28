@@ -3,6 +3,7 @@ package com.home.tim.worktimer.control;
 import com.home.tim.worktimer.dtos.UserDTO;
 import com.home.tim.worktimer.entities.User;
 import com.home.tim.worktimer.repositories.UserRepository;
+import com.sun.jna.platform.win32.Netapi32Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -50,6 +51,19 @@ public class UserControl {
         }
 
         return user;
+
+    }
+
+    public void saveUser(UserDTO userDTO){
+
+        User user = new User();
+
+        user.setEmail(userDTO.getEmail());
+        user.setUsername(userDTO.getUserName());
+        user.setRole(userDTO.getRole());
+        user.setPassword(userDTO.getPassword());
+
+        userRepository.save(user);
 
     }
 
