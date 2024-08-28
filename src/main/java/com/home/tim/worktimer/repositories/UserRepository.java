@@ -19,12 +19,12 @@ public interface UserRepository extends JpaRepository <User, Integer> {
     void deleteUserByUsername(String userName);
 
     @Query("SELECT u FROM User u WHERE u.username = ?1")
-    UserDTO getUserByUsername(String userName);
+    User getUserByUsername(String userName);
 
     @Query("SELECT u FROM User u WHERE u.password = ?1")
-    UserDTO getUserByPassword(String password);
+    User getUserByPassword(String password);
 
     @Query("SELECT u FROM User u WHERE u.username = ?1 AND u.password = ?2")
-    UserDTO getUserByUsernameAndPassword(String userName, String password);
+    User getUserByUsernameAndPassword(String userName, String password);
 
 }

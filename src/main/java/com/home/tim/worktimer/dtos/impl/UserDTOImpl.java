@@ -7,8 +7,8 @@ import lombok.Setter;
 
 public class UserDTOImpl implements UserDTO {
 
-    private int userID;
-    private String userName;
+    private int userid;
+    private String username;
     private String email;
     private String password;
     private String role;
@@ -16,22 +16,22 @@ public class UserDTOImpl implements UserDTO {
 
     @Override
     public int getUserID() {
-        return userID;
+        return userid;
     }
 
     @Override
-    public void setUSerID(int userID) {
-        this.userID=userID;
+    public void setUSerID(int userid) {
+        this.userid=userid;
     }
 
     @Override
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     @Override
-    public void setUserName(String userName) {
-        this.userName=userName;
+    public void setUserName(String username) {
+        this.username=username;
     }
 
     @Override

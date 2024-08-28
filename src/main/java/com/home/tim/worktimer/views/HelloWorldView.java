@@ -2,6 +2,7 @@ package com.home.tim.worktimer.views;
 
 import com.home.tim.worktimer.control.UserControl;
 import com.home.tim.worktimer.dtos.UserDTO;
+import com.home.tim.worktimer.dtos.impl.UserDTOImpl;
 import com.home.tim.worktimer.entities.User;
 
 import com.home.tim.worktimer.repositories.UserRepository;
@@ -13,6 +14,7 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.charts.model.Label;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -29,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 
 @PageTitle("Hello World")
@@ -37,13 +40,16 @@ public class HelloWorldView extends FormLayout {
 
     @Autowired
     UserRepository userRepository;
+    private H2 heading;
     private Button startWork;
     private Paragraph par_startWork;
     private Paragraph par_time_worked;
     private Button endWork;
     private Button sayHello;
+    private UserDTO currentUser;
 
     public HelloWorldView() {
+
 
         startWork = new Button("Start Work");
         endWork = new Button("Stop Work");
@@ -61,7 +67,10 @@ public class HelloWorldView extends FormLayout {
         TextField t = new TextField("Test");
         add(t);
         add(createProgressBar());
-
+        currentUser = (UserDTO) UI.getCurrent().getSession().getAttribute("CurrentUser");
+        heading = new H2();
+        heading.setText("Welcome ");
+        add(heading);
 
         startWork.addClickListener(event -> {
             LocalDateTime now = LocalDateTime.now();
@@ -86,8 +95,11 @@ public class HelloWorldView extends FormLayout {
         if (currentUser == null) {
             attachEvent.getUI().getCurrent().navigate("login");
 
+
         } else {
             System.out.println("Authenticated!");
+            System.err.println(currentUser.getClass());
+            heading.setText("Welcome "+ currentUser.getUserName());
 
         }
 

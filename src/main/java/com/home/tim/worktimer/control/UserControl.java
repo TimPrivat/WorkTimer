@@ -27,25 +27,25 @@ public class UserControl {
 
 
     public boolean userExists(String userName) {
-        UserDTO user = userRepository.getUserByUsername(userName);
+        User user = userRepository.getUserByUsername(userName);
         return user != null;
 
     }
 
 
     public UserDTO getUserByPassword(String password) {
-        UserDTO user = userRepository.getUserByPassword(password);
+        User user = userRepository.getUserByPassword(password);
         if (user == null) {
             System.err.println("User couldn't be found.");
             ;
         }
 
-        return user;
+        return (UserDTO) user;
 
     }
 
     public UserDTO getUserByUsernameAndPassword(String username, String password) {
-        UserDTO user = userRepository.getUserByUsernameAndPassword(username, password);
+        UserDTO user = (UserDTO) userRepository.getUserByUsernameAndPassword(username, password);
         if (user == null) {
             System.err.println("User couldn't be found.");
         }

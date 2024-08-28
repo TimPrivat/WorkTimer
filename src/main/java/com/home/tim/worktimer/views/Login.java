@@ -3,6 +3,7 @@ package com.home.tim.worktimer.views;
 import com.home.tim.worktimer.control.LoginControl;
 import com.home.tim.worktimer.control.UserControl;
 import com.home.tim.worktimer.dtos.UserDTO;
+import com.home.tim.worktimer.dtos.impl.UserDTOImpl;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.login.AbstractLogin;
@@ -65,6 +66,7 @@ public class Login extends VerticalLayout {
 
             if (loginControl.isRegisteredUser(userName, password)) {
                 UserDTO currentUser = userControl.getUserByUsernameAndPassword(userName, password);
+                System.out.println("userName: " + userName);
                 UI.getCurrent().getSession().setAttribute("CurrentUser", currentUser);
                 UI.getCurrent().navigate("Hello-World");
             } else {
