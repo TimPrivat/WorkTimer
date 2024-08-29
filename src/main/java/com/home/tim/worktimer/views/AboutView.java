@@ -3,6 +3,7 @@ package com.home.tim.worktimer.views;
 import com.home.tim.worktimer.control.LoginControl;
 import com.home.tim.worktimer.dtos.UserDTO;
 import com.home.tim.worktimer.entities.User;
+import com.home.tim.worktimer.util.Routes;
 import com.home.tim.worktimer.views.MainLayout;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.UI;
@@ -17,7 +18,7 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("About")
-@Route(value = "about", layout = MainLayout.class)
+@Route(value = Routes.ABOUT, layout = MainLayout.class)
 public class AboutView extends VerticalLayout {
     @Autowired
     LoginControl loginControl;

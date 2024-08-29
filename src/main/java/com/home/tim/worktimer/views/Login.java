@@ -5,6 +5,7 @@ import com.home.tim.worktimer.control.UserControl;
 import com.home.tim.worktimer.dtos.UserDTO;
 import com.home.tim.worktimer.dtos.impl.UserDTOImpl;
 import com.home.tim.worktimer.entities.User;
+import com.home.tim.worktimer.util.Routes;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.login.AbstractLogin;
@@ -26,7 +27,7 @@ import static com.vaadin.flow.component.UI.getCurrent;
 
 @PageTitle("Login")
 @Route(value = "")
-@RouteAlias(value = "login")
+@RouteAlias(value = Routes.LOGIN)
 public class Login extends VerticalLayout {
 
     @Autowired
@@ -67,9 +68,8 @@ public class Login extends VerticalLayout {
 
             if (loginControl.isRegisteredUser(userName, password)) {
                 UserDTO currentUser = userControl.getUserByUsernameAndPassword(userName, password);
-                System.out.println("userName: " + userName);
                 UI.getCurrent().getSession().setAttribute("CurrentUser", currentUser);
-                UI.getCurrent().navigate("Hello-World");
+                UI.getCurrent().navigate(Routes.OVERVIEW);
             } else {
                 loginForm.showErrorMessage("Wrong LoginData", "The User could not be found");
 
