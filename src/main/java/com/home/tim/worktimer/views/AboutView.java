@@ -1,5 +1,6 @@
 package com.home.tim.worktimer.views;
 
+import com.home.tim.worktimer.control.LoginControl;
 import com.home.tim.worktimer.dtos.UserDTO;
 import com.home.tim.worktimer.entities.User;
 import com.home.tim.worktimer.views.MainLayout;
@@ -13,11 +14,13 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoUtility.Margin;
 import jakarta.annotation.security.PermitAll;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @PageTitle("About")
 @Route(value = "about", layout = MainLayout.class)
 public class AboutView extends VerticalLayout {
-
+    @Autowired
+    LoginControl loginControl;
     public AboutView() {
         setSpacing(false);
 
@@ -38,15 +41,9 @@ public class AboutView extends VerticalLayout {
 
     @Override
     protected void onAttach(AttachEvent attachEvent) {
-        UserDTO currentUser = (UserDTO) UI.getCurrent().getSession().getAttribute("CurrentUser");
 
-        if (currentUser == null) {
-            attachEvent.getUI().getCurrent().navigate("login");
+        UserDTO userDTO = loginControl.validateUser(attachEvent);
 
-        } else {
-            System.out.println("Authenticated!");
-
-        }
 
     }
 

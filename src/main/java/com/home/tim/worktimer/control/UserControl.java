@@ -1,6 +1,7 @@
 package com.home.tim.worktimer.control;
 
 import com.home.tim.worktimer.dtos.UserDTO;
+import com.home.tim.worktimer.dtos.impl.UserDTOImpl;
 import com.home.tim.worktimer.entities.User;
 import com.home.tim.worktimer.repositories.UserRepository;
 import com.sun.jna.platform.win32.Netapi32Util;
@@ -17,9 +18,6 @@ public class UserControl {
     @Autowired
     UserRepository userRepository;
 
-    public void createUser(User user) {
-        userRepository.save(user);
-    }
 
     public void updateUser(User user) {
         userRepository.save(user);
@@ -33,30 +31,30 @@ public class UserControl {
     }
 
 
-    public UserDTO getUserByPassword(String password) {
+    public User getUserByPassword(String password) {
         User user = userRepository.getUserByPassword(password);
         if (user == null) {
             System.err.println("User couldn't be found.");
             ;
         }
 
-        return (UserDTO) user;
+        return user;
 
     }
 
     public UserDTO getUserByUsernameAndPassword(String username, String password) {
-        UserDTO user = (UserDTO) userRepository.getUserByUsernameAndPassword(username, password);
+        User user = userRepository.getUserByUsernameAndPassword(username, password);
         if (user == null) {
             System.err.println("User couldn't be found.");
         }
 
-        return user;
+        return convertUserToDTO(user);
 
     }
 
     public void saveUser(UserDTO userDTO){
 
-        User user = new User();
+        User user = userDTO.getUser();
 
         user.setEmail(userDTO.getEmail());
         user.setUsername(userDTO.getUserName());
@@ -64,6 +62,18 @@ public class UserControl {
         user.setPassword(userDTO.getPassword());
 
         userRepository.save(user);
+
+    }
+
+    private UserDTO convertUserToDTO(User user){
+        UserDTO userDTO = new UserDTOImpl();
+        userDTO.setUserName(user.getUsername());
+        userDTO.setEmail(userDTO.getEmail());
+        userDTO.setPassword(user.getPassword());
+        userDTO.setRole(user.getRole());
+        userDTO.setUser(user);
+
+        return userDTO;
 
     }
 

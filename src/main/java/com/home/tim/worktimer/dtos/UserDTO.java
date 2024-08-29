@@ -1,10 +1,10 @@
 package com.home.tim.worktimer.dtos;
 
+import com.home.tim.worktimer.entities.User;
+
 public interface UserDTO {
 
     int getUserID();
-
-    void setUSerID(int userID);
 
     String getUserName();
 
@@ -21,6 +21,9 @@ public interface UserDTO {
     String getRole();
 
     void setRole(String role);
+    User getUser();
+    void setUser(User user);
+
 
 
 }

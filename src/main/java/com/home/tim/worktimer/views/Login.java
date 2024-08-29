@@ -4,6 +4,7 @@ import com.home.tim.worktimer.control.LoginControl;
 import com.home.tim.worktimer.control.UserControl;
 import com.home.tim.worktimer.dtos.UserDTO;
 import com.home.tim.worktimer.dtos.impl.UserDTOImpl;
+import com.home.tim.worktimer.entities.User;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.login.AbstractLogin;

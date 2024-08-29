@@ -1,5 +1,6 @@
 package com.home.tim.worktimer.views;
 
+import com.home.tim.worktimer.control.LoginControl;
 import com.home.tim.worktimer.control.UserControl;
 import com.home.tim.worktimer.dtos.UserDTO;
 import com.home.tim.worktimer.dtos.impl.UserDTOImpl;
@@ -40,6 +41,8 @@ public class HelloWorldView extends FormLayout {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    LoginControl loginControl;
     private H2 heading;
     private Button startWork;
     private Paragraph par_startWork;
@@ -70,6 +73,11 @@ public class HelloWorldView extends FormLayout {
         currentUser = (UserDTO) UI.getCurrent().getSession().getAttribute("CurrentUser");
         heading = new H2();
         heading.setText("Welcome ");
+        heading.addAttachListener(attachEvent -> {
+
+            //  heading.setText("Welcome "+ ((UserDTO) attachEvent.getUI().getCurrent().getSession().getAttribute("CurrentUser")).getUserName());
+        });
+        //heading.setText("Welcome "+ ((UserDTO) UI.getCurrent().getSession().getAttribute("CurrentUser")).getUserName());
         add(heading);
 
         startWork.addClickListener(event -> {
@@ -90,18 +98,9 @@ public class HelloWorldView extends FormLayout {
 
     @Override
     protected void onAttach(AttachEvent attachEvent) {
-        UserDTO currentUser = (UserDTO) UI.getCurrent().getSession().getAttribute("CurrentUser");
 
-        if (currentUser == null) {
-            attachEvent.getUI().getCurrent().navigate("login");
-
-
-        } else {
-            System.out.println("Authenticated!");
-            System.err.println(currentUser.getClass());
-            heading.setText("Welcome "+ currentUser.getUserName());
-
-        }
+        UserDTO userDTO = loginControl.validateUser(attachEvent);
+        heading.setText("Welcome " + userDTO.getUserName());
 
     }
 
@@ -113,8 +112,6 @@ public class HelloWorldView extends FormLayout {
 
 
     }
-
-
 
 
 }

@@ -1,6 +1,7 @@
 package com.home.tim.worktimer.dtos.impl;
 
 import com.home.tim.worktimer.dtos.UserDTO;
+import com.home.tim.worktimer.entities.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,16 +13,12 @@ public class UserDTOImpl implements UserDTO {
     private String email;
     private String password;
     private String role;
+    private User user;
 
 
     @Override
     public int getUserID() {
-        return userid;
-    }
-
-    @Override
-    public void setUSerID(int userid) {
-        this.userid=userid;
+        return user.getUserid();
     }
 
     @Override
@@ -31,7 +28,7 @@ public class UserDTOImpl implements UserDTO {
 
     @Override
     public void setUserName(String username) {
-        this.username=username;
+        this.username = username;
     }
 
     @Override
@@ -41,7 +38,7 @@ public class UserDTOImpl implements UserDTO {
 
     @Override
     public void setEmail(String email) {
-        this.email=email;
+        this.email = email;
     }
 
     @Override
@@ -51,7 +48,7 @@ public class UserDTOImpl implements UserDTO {
 
     @Override
     public void setPassword(String password) {
-        this.password=password;
+        this.password = password;
     }
 
     @Override
@@ -61,6 +58,16 @@ public class UserDTOImpl implements UserDTO {
 
     @Override
     public void setRole(String role) {
-        this.role=role;
+        this.role = role;
+    }
+
+    @Override
+    public User getUser() {
+        return user;
+    }
+
+    @Override
+    public void setUser(User user) {
+        this.user = user;
     }
 }
