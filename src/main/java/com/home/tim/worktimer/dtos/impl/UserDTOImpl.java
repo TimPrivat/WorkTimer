@@ -70,4 +70,5 @@ public class UserDTOImpl implements UserDTO {
     public void setUser(User user) {
         this.user = user;
     }
+
 }

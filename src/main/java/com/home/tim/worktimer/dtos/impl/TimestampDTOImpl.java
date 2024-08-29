@@ -56,4 +56,15 @@ public class TimestampDTOImpl implements TimestampDTO {
     public Timestamp getTimeStamp() {
         return timestamp;
     }
+
+
+    @Override
+    public String toString(){
+
+        int hour = time.getHour();
+        int minute = time.getMinute();
+        int seconds = time.getSecond();
+
+        return hour+":"+minute+":"+seconds;
+    }
 }

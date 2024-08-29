@@ -1,7 +1,10 @@
 package com.home.tim.worktimer.views;
 
 import com.home.tim.worktimer.control.LoginControl;
+import com.home.tim.worktimer.control.TimestampControl;
+import com.home.tim.worktimer.dtos.TimestampDTO;
 import com.home.tim.worktimer.dtos.UserDTO;
+import com.home.tim.worktimer.dtos.impl.TimestampDTOImpl;
 import com.home.tim.worktimer.entities.Timestamp;
 import com.home.tim.worktimer.entities.Type;
 import com.home.tim.worktimer.entities.User;
@@ -44,12 +47,14 @@ public class Overview extends VerticalLayout {
     private Button testButton;
 
     private UserDTO currentUser;
+
     public Overview() {
 
         createForm();
         createHeading();
         createProgressBar();
         createTestButton();
+
         add(heading, formLayout, progressBar, testButton);
 
     }
@@ -59,6 +64,7 @@ public class Overview extends VerticalLayout {
 
         currentUser = loginControl.validateUser(attachEvent);
         heading.setText("Welcome " + currentUser.getUserName());
+        configureButtons();
 
     }
 
@@ -70,13 +76,6 @@ public class Overview extends VerticalLayout {
         endWork = new Button("Stop Work");
         par_startWork = new Paragraph("Startzeit: 12:30 Uhr");
         par_time_worked = new Paragraph("Gearbeitet: 01:12:00");
-
-
-        startWork.addClickListener(event -> {
-
-            UI.getCurrent().access(() -> par_startWork.setText("Startzeit: " + LocalDateTime.now()));
-
-        });
 
         formLayout.add(par_startWork, par_time_worked, startWork, endWork);
 
@@ -99,22 +98,59 @@ public class Overview extends VerticalLayout {
 
     }
 
+    @Autowired
+    TimestampControl timestampControl;
 
-    private void createTestButton(){
+    private void createTestButton() {
 
         testButton = new Button("Test");
 
         testButton.addClickListener(buttonClickEvent -> {
 
-
-
-
+            timestampControl.saveCurrentTimeStamp(currentUser);
+            timestampControl.getLatestTimeOfUser(currentUser);
 
 
         });
     }
 
-    private void configureButtons(){
+    private void configureButtons() {
+
+        if (currentUser == null)
+            return;
+
+        updateButtonStates();
+
+        startWork.addClickListener(event -> {
+
+            TimestampDTO timestampDTO = new TimestampDTOImpl();
+
+            timestampDTO.setType(Type.START);
+            timestampDTO.setTime(LocalDateTime.now());
+            timestampDTO.setUserID(currentUser.getUserID());
+
+            timestampControl.saveTimeStamp(timestampDTO);
+
+            UI.getCurrent().access(() -> par_startWork.setText("Startzeit: " + timestampDTO+"Uhr"));
+            updateButtonStates();
+            System.err.println("Start");
+
+        });
+
+        endWork.addClickListener(buttonClickEvent -> {
+
+            UI.getCurrent().access(() -> par_time_worked.setText("Endzeit: " + LocalDateTime.now()));
+            updateButtonStates();
+            System.err.println("END");
+        });
+
+    }
+    private void updateButtonStates(){
+        TimestampDTO timestampDTO = timestampControl.getLatestTimeOfUser(currentUser);
+
+        boolean isStart = timestampDTO == null || timestampDTO.getType() == Type.END;
+        endWork.setEnabled(!isStart);
+        startWork.setEnabled(isStart);
 
 
     }

@@ -19,4 +19,5 @@ public interface TimestampDTO {
 
     void setTimeStamp(Timestamp timeStamp);
     Timestamp getTimeStamp();
+    String toString();
 }
