@@ -66,6 +66,12 @@ public class Overview extends VerticalLayout {
 
 
     }
+// TODO:
+// - ProgressBar stays and does not reset
+// - Input Field for Custom Work TIme
+// - ProgressBar Turns Green after full Workday
+
+
 
     @Override
     protected void onAttach(AttachEvent attachEvent) {
@@ -98,16 +104,17 @@ public class Overview extends VerticalLayout {
         progressBar = new ProgressBar();
 
     }
-    private Double getProgressBarValue(){
+
+    private Double getProgressBarValue() {
         //Value for 9,5 hours;
         //int secondsToWork = 34000;
 
-        int secondsToWork=20;
+        int secondsToWork = 20;
         TimestampDTO timestampDTO = timestampControl.getLatestTimeOfUser(currentUser);
-        Duration difference = Duration.between(timestampDTO.getTime(),LocalDateTime.now());
+        Duration difference = Duration.between(timestampDTO.getTime(), LocalDateTime.now());
         long secondsSinceStart = difference.getSeconds();
-        Double progress = (double) secondsSinceStart/secondsToWork;
-        System.err.println("Progress: "+ progress);
+        Double progress = (double) secondsSinceStart / secondsToWork;
+        System.err.println("Progress: " + progress);
         return progress;
 
     }
@@ -119,7 +126,6 @@ public class Overview extends VerticalLayout {
 
 
     }
-
 
 
     private void configureButtons() {
