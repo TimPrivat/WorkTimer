@@ -25,6 +25,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.progressbar.ProgressBar;
+import com.vaadin.flow.component.progressbar.ProgressBarVariant;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -52,6 +53,7 @@ public class Overview extends VerticalLayout {
     private Paragraph par_startWork;
     private Paragraph par_time_worked;
     private ProgressBar progressBar;
+    private double progressBarProgress;
 
     private UserDTO currentUser;
     private UI ui;
@@ -67,10 +69,7 @@ public class Overview extends VerticalLayout {
 
     }
 // TODO:
-// - ProgressBar stays and does not reset
 // - Input Field for Custom Work TIme
-// - ProgressBar Turns Green after full Workday
-
 
 
     @Override
@@ -111,12 +110,24 @@ public class Overview extends VerticalLayout {
 
         int secondsToWork = 20;
         TimestampDTO timestampDTO = timestampControl.getLatestTimeOfUser(currentUser);
-        Duration difference = Duration.between(timestampDTO.getTime(), LocalDateTime.now());
-        long secondsSinceStart = difference.getSeconds();
-        Double progress = (double) secondsSinceStart / secondsToWork;
-        System.err.println("Progress: " + progress);
-        return progress;
 
+        long secondsSinceStart = 1;
+        if (timestampDTO.getType() == Type.START) {
+
+            Duration difference = Duration.between(timestampDTO.getTime(), LocalDateTime.now());
+            secondsSinceStart = difference.getSeconds();
+        } else {
+            TimestampDTO starTimestampDTO = timestampControl.getLatestTypeTimeOfUser(currentUser, Type.START);
+            Duration difference = Duration.between(starTimestampDTO.getTime(), timestampDTO.getTime());
+            secondsSinceStart = difference.getSeconds();
+
+        }
+
+
+        Double progress = (double) secondsSinceStart / secondsToWork;
+        progressBarProgress = (progress >= 1) ? 1 : progress;
+
+        return progressBarProgress;
     }
 
     private void createHeading() {
@@ -147,6 +158,7 @@ public class Overview extends VerticalLayout {
             UI.getCurrent().access(() -> par_startWork.setText("Startzeit: " + timestampDTO + "Uhr"));
             timeWorkedUpdates(UI.getCurrent());
             updateButtonStates();
+            configureButtonLabels();
 
         });
 
@@ -160,8 +172,14 @@ public class Overview extends VerticalLayout {
 
             timestampControl.saveTimeStamp(timestampDTO);
 
-            UI.getCurrent().access(() -> par_time_worked.setText("Endzeit: " + timestampDTO));
+            UI.getCurrent().access(() -> {
+
+                par_time_worked.setText("Endzeit: " + timestampDTO);
+
+                progressBar.setValue(getProgressBarValue());
+            });
             updateButtonStates();
+            configureButtonLabels();
 
 
         });
@@ -187,8 +205,20 @@ public class Overview extends VerticalLayout {
 
         String updatedStart = "Startzeit: " + startTime + " Uhr";
 
-        String endTime = startTime.timeDifferenceSinceStart();
-        String updatedEnd = "Gearbeitet: " + endTime;
+
+        String updatedEnd;
+        if (timestampControl.getLatestTimeOfUser(currentUser).getType() == Type.START) {
+
+            String endTime = startTime.timeDifferenceSinceStart();
+            updatedEnd = "Gearbeitet: " + endTime;
+        } else {
+            startTime = timestampControl.getLatestTypeTimeOfUser(currentUser, Type.START);
+            TimestampDTO endTimeDTO = timestampControl.getLatestTypeTimeOfUser(currentUser, Type.END);
+
+            String endTime = startTime.timeDifferenceBetween(endTimeDTO.getTime());
+            updatedEnd = "Gearbeitet: " + endTime;
+
+        }
 
 
         UI.getCurrent().access(() -> {
@@ -202,8 +232,7 @@ public class Overview extends VerticalLayout {
     public void timeWorkedUpdates(UI ui) {
 
         currentUser = (UserDTO) ui.getSession().getAttribute("CurrentUser");
-        if (currentUser == null || ui == null)
-            return;
+        if (currentUser == null || ui == null) return;
 
 
         new Thread(() -> updateTimeWorkedLambda(ui)).start();
@@ -217,8 +246,7 @@ public class Overview extends VerticalLayout {
             TimestampDTO startTime = timestampControl.getLatestTimeOfUser(currentUser);
             try {
                 Thread.sleep(1000);
-                if (!ui.isAttached())
-                    return;
+                if (!ui.isAttached()) return;
                 ui.access(() -> {
                     par_time_worked.setText("Gearbeitet: " + startTime.timeDifferenceSinceStart());
                     progressBar.setValue(getProgressBarValue());
@@ -228,6 +256,14 @@ public class Overview extends VerticalLayout {
                 e.printStackTrace();
             }
 
+
+        }
+
+        if (timestampControl.getLatestTimeOfUser(currentUser).getType() == Type.END) {
+            if (!ui.isAttached()) return;
+            ui.access(() -> {
+                progressBar.setValue(getProgressBarValue());
+            });
 
         }
     }

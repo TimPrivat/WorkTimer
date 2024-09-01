@@ -39,6 +39,25 @@ public class TimestampControl {
         return convertToDTO(latestDate);
     }
 
+    public TimestampDTO getLatestTypeTimeOfUser(UserDTO userDTO,Type type){
+
+        if (userDTO.getUser() == null)
+            return null;
+
+        List<Timestamp> allTimeStamps = timeStampRepository.findAllTypeTimeStampsOfUser(userDTO.getUserID(),type);
+        Optional<Timestamp> optionalLatestDate = allTimeStamps.stream().max(Comparator.comparing(Timestamp::getTime));
+
+
+        if (!optionalLatestDate.isPresent()){
+            System.err.println("Could not get TimeStamp");
+            return null;
+        }
+        Timestamp latestDate = optionalLatestDate.get();
+
+
+        return convertToDTO(latestDate);
+    }
+
     public void saveTimeStamp(TimestampDTO timestampDTO){
         Timestamp timestamp = new Timestamp();
 

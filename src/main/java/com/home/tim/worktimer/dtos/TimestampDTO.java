@@ -18,6 +18,7 @@ public interface TimestampDTO {
     LocalDateTime getTime();
 
     String timeDifferenceSinceStart();
+    String timeDifferenceBetween(LocalDateTime localDateTime);
 
     void setTimeStamp(Timestamp timeStamp);
     Timestamp getTimeStamp();

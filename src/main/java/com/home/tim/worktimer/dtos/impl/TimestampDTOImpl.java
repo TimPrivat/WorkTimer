@@ -55,7 +55,12 @@ public class TimestampDTOImpl implements TimestampDTO {
 
     @Override
     public String timeDifferenceSinceStart() {
-        Duration duration = Duration.between(this.getTime(),LocalDateTime.now());
+        return timeDifferenceBetween(LocalDateTime.now());
+    }
+
+    @Override
+    public String timeDifferenceBetween(LocalDateTime localDateTime) {
+        Duration duration = Duration.between(this.getTime(),localDateTime);
 
 
         int secondsLong= (int) (duration.getSeconds()%60);
